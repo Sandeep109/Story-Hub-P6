@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Text, View, TextInput, StyleSheet } from 'react-native';
+import { Text, ToastAndroid, TextInput, StyleSheet, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import { Header } from 'react-native-elements';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import db from "../config";
 import firebase from 'firebase';
 
@@ -18,8 +17,8 @@ export default class WriteStoryScreen extends React.Component {
 
   submitStory=()=>{
     db.collection("Stories").add({
-      "Title of the Story": this.state.title,
-      "Author of the Story": this.state.author,
+      "TitleoftheStory": this.state.title,
+      "AuthoroftheStory": this.state.author,
       "Story": this.state.story,
     })
     this.setState({
@@ -30,18 +29,20 @@ export default class WriteStoryScreen extends React.Component {
   }
   render() {
     return (
-      <View style={styles.container}>
-        <Header
-          backgroundColor={'#FF8C00'}
-          centerComponent={{
-            text: 'STORY HUB',
-            style: {
-              color: '#FF0000',
-              fontSize: 30,
-              fontWeight: 'bold',
-            },
-          }}
-        />
+      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+            <Header
+              backgroundColor={'#DF3A01'}
+              centerComponent={{
+                text: 'STORY HUB',
+                style: {
+                  color: '#FFFFFF',
+                  textAlign:"center",
+                  width:800,
+                  fontSize: 30,
+                  fontWeight: 'bold',
+                },
+              }}
+          />
         <TextInput
           style={styles.inputBox}
           placeholder="Title of the Story"
@@ -58,34 +59,38 @@ export default class WriteStoryScreen extends React.Component {
           value={this.state.author}></TextInput>
         <TextInput
           style={styles.content}
-          placeholder="Write Story"
+          placeholder="Write your Story here"
           multiline={true}
           onChangeText={(text) => {
             this.setState({ story: text });
           }}
           value={this.state.story}></TextInput>
 
-        <TouchableOpacity style={styles.submitButton} onPress={this.submitStory}>
+        <TouchableOpacity style={styles.submitButton} onPress={()=>{
+          this.submitStory()
+          ToastAndroid.show("Yay!! Your story has been submitted!",ToastAndroid.SHORT,ToastAndroid.CENTER);
+        }}>
           <Text style={styles.buttonText}>SUBMIT</Text>
         </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   submitButton: {
-    backgroundColor: '#FF8C00',
+    backgroundColor: '#DF3A01',
+    marginTop: 20,
     width: 150,
     height: 50,
     borderWidth: 1.5,
     borderColor: '#FF0000',
     marginBottom: 10,
-    borderRadius: 10,
+    borderRadius: 15,
     alignSelf: 'center',
   },
   container: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#F5BCA9',
     flex: 1,
     alignItems: "center"
   },
@@ -94,27 +99,27 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 7,
     fontWeight: 'bold',
-    color: '#FF0000',
+    color: '#FFFFFF',
   },
   inputBox: {
-    width: 350,
+    width: '80%',
     height: 70,
     borderWidth: 2,
     fontSize: 20,
-    margin: 10,
+    marginTop: 20,
     textAlign: 'center',
     backgroundColor: 'white',
     fontWeight: 'bold',
-    color: '#FF8C00',
+    color: '#DF3A01',
   },
   content: {
     backgroundColor: 'white',
-    width: 350,
+    marginTop: 30,
+    width: '80%',
     fontWeight: 'bold',
-    color: '#FF8C00',
+    color: '#DF3A01',
     height: 350,
     borderWidth: 2,
-    margin: 10,
     textAlign: 'center',
     fontSize: 20,
   },
