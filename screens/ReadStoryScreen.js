@@ -80,17 +80,19 @@ export default class ReadStoryScreen extends React.Component {
                   backgroundColor = "white"
             />
           </View>
-          
-          <ScrollView>
-            {this.state.dataSource.map((story)=>{
-              return (
-                <View style={styles.storyContainer}>
-                  <Text style={{fontSize: 20}}>  TITLE:  {story.TitleoftheStory}</Text>
-                  <Text style={{fontSize: 20}}>  AUTHOR :  {story.AuthoroftheStory}</Text>
-                </View>
-              )
-            })}
-            </ScrollView> 
+
+            <FlatList
+          data={this.state.dataSource}
+          renderItem={({item})=>(
+            <View style={{borderBottomWidth: 2}}>
+              <Text>{"Title of the Story: " + item.TitleoftheStory}</Text>
+              <Text>{"Author of the Story: " + item.AuthoroftheStory}</Text>
+            </View>
+          )}
+          keyExtractor= {(item, index)=> index.toString()}
+          onEndReached ={this.fetchMoreTransactions}
+          onEndReachedThreshold={0.7}
+        /> 
           
           
           
